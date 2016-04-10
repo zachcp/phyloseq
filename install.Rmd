@@ -40,7 +40,7 @@ then go ahead and load the devtools package and attempt to install phyloseq with
 
 ```{r eval=FALSE}
 library("devtools")
-install_github("phyloseq", "joey711")
+install_github("joey711/phyloseq")
 ```
 
 
