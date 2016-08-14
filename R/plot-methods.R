@@ -1540,7 +1540,7 @@ psmelt = function(physeq){
       # Remove the empty columns
       TT <- TT[, keepTTcols]
       # Add TT to the "psmelt" data.frame
-      tdf = data.table(TT)
+      tdf = data.table(as(TT, "matrix"))
       tdf$OTU <- as.character(taxa_names(physeq))
       # Now add to the "psmelt" output data.frame, `mdf`
       #mdf <- merge(mdf, tdf, by.x="OTU")
@@ -2296,7 +2296,7 @@ plot_tree = function(physeq, method="sampledodge", nodelabf=NULL,
   # Initialize the species/taxa/OTU data.table
   dodgeDT = treeSegs$edgeDT[!is.na(OTU), ]
   # Merge with psmelt() result, to make all co-variables available
-  dodgeDT = merge(x=dodgeDT, y=data.table(psmelt(physeq), key="OTU"), by="OTU")
+  dodgeDT = merge(x=dodgeDT, y=psmelt(physeq), by="OTU")
   if(justify=="jagged"){
     # Remove 0 Abundance value entries now, not later, for jagged.
     dodgeDT <- dodgeDT[Abundance > 0, ]    
