@@ -1511,7 +1511,8 @@ psmelt = function(physeq){
   otutab = otu_table(physeq)
   if(!taxa_are_rows(otutab)){otutab <- t(otutab)}
   # Melt the OTU table: wide form to long form table
-  mdf = reshape2::melt(as(otutab, "matrix"))
+  #mdf = reshape2::melt(as(otutab, "matrix"))
+  mdf = melt(data.table(otutab, keep.rownames = TRUE))
   colnames(mdf)[1] <- "OTU"
   colnames(mdf)[2] <- "Sample"
   colnames(mdf)[3] <- "Abundance"
@@ -1522,10 +1523,12 @@ psmelt = function(physeq){
   mdf$Sample <- as.character(mdf$Sample)
   # Merge the sample data.frame if present
   if(!is.null(sampleVars)){
-    sdf = data.frame(sample_data(physeq), stringsAsFactors=FALSE)
+    #sdf = data.frame(sample_data(physeq), stringsAsFactors=FALSE)
+    sdf = data.table(data.frame(sample_data(physeq)))
     sdf$Sample <- sample_names(physeq)
     # merge the sample-data and the melted otu table
-    mdf <- merge(mdf, sdf, by.x="Sample")
+    #mdf <- merge(mdf, sdf, by.x="Sample")
+    mdf <- data.table::merge(mdf, sdf, by.x="Sample")
   }
   # Next merge taxonomy data, if present
   if(!is.null(rankNames)){
@@ -1539,7 +1542,8 @@ psmelt = function(physeq){
       # Add TT to the "psmelt" data.frame
       tdf = data.frame(TT, OTU=taxa_names(physeq))
       # Now add to the "psmelt" output data.frame, `mdf`
-      mdf <- merge(mdf, tdf, by.x="OTU")
+      #mdf <- merge(mdf, tdf, by.x="OTU")
+      mdf <- data.table::merge(mdf, tdf, by.x="OTU")
     }
   }
   # Sort the entries by abundance
