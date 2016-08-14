@@ -1433,7 +1433,7 @@ extract_eigenvalue.decorana = function(ordination) ordination$evals
 #'
 #'  \code{\link{merge}}
 #' 
-#' @import data.table
+#' @importFrom  data.table data.table
 #' 
 #' @export
 #'
